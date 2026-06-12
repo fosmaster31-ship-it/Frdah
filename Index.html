@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FRDAH AUDIO SPEC // CORESYNC_v3.2</title>
+<style>
+:root{
+    --bg-dark:#070709;
+    --panel-dark:#0f0f14;
+    --cruellian-blue:#5b8cff;
+    --cruellian-glow:rgba(91,140,255,0.20);
+    --text-raw:#f1f5f9;
+    --text-dim:#64748b;
+    --terminal-border:#1e293b;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+::selection{
+    background:var(--cruellian-blue);
+    color:#000;
+}
+
+body{
+    background-color:var(--bg-dark);
+    color:var(--text-raw);
+    font-family:'Courier New', Courier, monospace;
+    margin:0;
+    padding:0;
+    line-height:1.6;
+    overflow-x:hidden;
+}
+
+/* HUD Overlay */
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+        linear-gradient(
+            rgba(18,16,16,0) 50%,
+            rgba(0,0,0,0.25) 50%
+        ),
+        linear-gradient(
+            90deg,
+            rgba(0,120,255,0.05),
+            rgba(255,255,255,0.01),
+            rgba(0,120,255,0.05)
+        );
+    background-size:100% 4px, 6px 100%;
+    pointer-events:none;
+    z-index:100;
+    opacity:.55;
+}
+
+header{
+    max-width:1100px;
+    margin:0 auto;
+    padding:80px 20px 40px;
+    border-bottom:2px dashed var(--terminal-border);
+    position:relative;
+}
+
+.sys-status{
+    position:absolute;
+    top:20px;
+    right:20px;
+    font-size:.8rem;
+    color:var(--cruellian-blue);
+    letter-spacing:2px;
+    text-transform:uppercase;
+    animation:pulse 2s infinite;
+}
+
+h1{
+    font-size:3rem;
+    font-weight:900;
+    margin:0;
+    text-transform:uppercase;
+    letter-spacing:-1px;
+    text-shadow:0 0 12px var(--cruellian-glow);
+}
+
+.tagline{
+    color:var(--cruellian-blue);
+    margin-top:5px;
+    letter-spacing:4px;
+    text-transform:uppercase;
+    font-weight:bold;
+}
+
+.manifesto{
+    max-width:700px;
+    margin:30px 0;
+    color:var(--text-dim);
+    border-left:3px solid var(--cruellian-blue);
+    padding-left:20px;
+    font-size:.95rem;
+}
+
+.core-principles{
+    margin-top:25px;
+    max-width:500px;
+}
+
+.core-principles-title{
+    color:var(--cruellian-blue);
+    font-weight:bold;
+    letter-spacing:2px;
+    margin-bottom:12px;
+}
+
+.core-principles div{
+    color:var(--text-dim);
+    margin-bottom:6px;
+}
+
+.terminal-btn{
+    display:inline-block;
+    padding:14px 35px;
+    border:1px solid var(--cruellian-blue);
+    color:var(--text-raw);
+    text-decoration:none;
+    text-transform:uppercase;
+    letter-spacing:3px;
+    font-weight:bold;
+    transition:.25s;
+}
+
+.terminal-btn:hover{
+    background:var(--cruellian-blue);
+    color:#000;
+    box-shadow:0 0 20px var(--cruellian-blue);
+}
+
+main{
+    max-width:1100px;
+    margin:60px auto;
+    padding:0 20px;
+}
+
+.matrix-headline{
+    font-size:1.2rem;
+    text-transform:uppercase;
+    margin-bottom:30px;
+    letter-spacing:2px;
+}
+
+.matrix-headline span{
+    color:var(--cruellian-blue);
+}
+
+.grid-container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:25px;
+}
+
+.terminal-card{
+    background:var(--panel-dark);
+    border:1px solid var(--terminal-border);
+    padding:35px;
+    transition:
+        border-color .3s ease,
+        transform .3s ease,
+        box-shadow .3s ease;
+}
+
+.terminal-card:hover{
+    border-color:var(--cruellian-blue);
+    box-shadow:0 0 20px var(--cruellian-glow);
+    transform:translateY(-4px);
+}
+
+.card-id{
+    color:var(--cruellian-blue);
+    font-size:.75rem;
+    margin-bottom:15px;
+}
+
+.card-title{
+    font-size:1.4rem;
+    font-weight:bold;
+    text-transform:uppercase;
+}
+
+.card-cost{
+    margin:15px 0 20px;
+    padding-bottom:15px;
+    border-bottom:1px solid var(--terminal-border);
+    font-weight:bold;
+}
+
+.card-specs{
+    list-style:none;
+    padding:0;
+    margin:0;
+}
+
+.card-specs li{
+    margin-bottom:12px;
+    color:var(--text-dim);
+    padding-left:20px;
+    position:relative;
+}
+
+.card-specs li::before{
+    content:"::";
+    position:absolute;
+    left:0;
+    color:var(--cruellian-blue);
+}
+
+footer{
+    max-width:1100px;
+    margin:100px auto 60px;
+    padding:60px 20px;
+    border-top:2px dashed var(--terminal-border);
+    text-align:center;
+}
+
+.secure-link{
+    display:inline-block;
+    margin:25px 0;
+    padding:15px 30px;
+    border:1px dashed var(--terminal-border);
+    text-decoration:none;
+    color:var(--text-raw);
+    font-size:1.3rem;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.secure-link:hover{
+    border-color:var(--cruellian-blue);
+    color:var(--cruellian-blue);
+    background:rgba(91,140,255,0.02);
+}
+
+@keyframes pulse{
+    0%{opacity:.4;}
+    50%{opacity:1;}
+    100%{opacity:.4;}
+}
+
+@media(max-width:768px){
+    h1{
+        font-size:2.2rem;
+    }
+
+    header{
+        padding:60px 20px 30px;
+    }
+
+    .secure-link{
+        font-size:1rem;
+        padding:10px 15px;
+    }
+}
+</style>
+</head>
+<body>
+
+<header>
+    <div class="sys-status">● CORESYNC_ACTIVE</div>
+    <h1>FRDAH AUDIO SPEC</h1>
+    <div class="tagline">// ARCHITECTURAL AUDIO SYNTHESIS</div>
+    
+    <div class="manifesto">
+        CORESYNC ENGINE CORE // V3.2 ACTIVE.<br><br>
+        Engineering, structural mix reconstruction, multi-stem recovery, and generative audio restoration designed for modern artists who demand impact, clarity, and identity preservation.
+    </div>
+
+    <div class="core-principles">
+        <div class="core-principles-title">CORE PRINCIPLES</div>
+        <div>:: Preserve Human Emotion</div>
+        <div>:: Remove Machine Artifacts</div>
+        <div>:: Enhance Transient Impact</div>
+        <div>:: Maintain Dynamic Range</div>
+        <div>:: Protect Artist Identity</div>
+    </div>
+    <br>
+    <a href="#secure-node" class="terminal-btn">Initiate Connection</a>
+</header>
+
+<main>
+    <div class="matrix-headline">SELECT OPERATIONAL <span>TIER_</span></div>
+    
+    <div class="grid-container">
+        <div class="terminal-card">
+            <div class="card-id">[DATA_SALVAGE_01]</div>
+            <div class="card-title">AI AUDIO SALVAGE</div>
+            <div class="card-cost">$75 - $100 / TRACK</div>
+            <ul class="card-specs">
+                <li>Suno/Udio artifact reduction</li>
+                <li>Frequency cleanup & phase correction</li>
+                <li>Sub-bass enhancement</li>
+                <li>Final polish and mastering preparation</li>
+            </ul>
+        </div>
+
+        <div class="terminal-card">
+            <div class="card-id">[VELOCITY_MIX_02]</div>
+            <div class="card-title">QUICK MIX & MASTER</div>
+            <div class="card-cost">$150 - $250 / SONG</div>
+            <ul class="card-specs">
+                <li>Vocal placement and balancing</li>
+                <li>Stereo image optimization</li>
+                <li>Streaming loudness targeting</li>
+                <li>Fast turnaround release workflow</li>
+            </ul>
+        </div>
+
+        <div class="terminal-card">
+            <div class="card-id">[FULL_RECON_03]</div>
+            <div class="card-title">SIGNATURE MULTI-STEM</div>
+            <div class="card-cost">$400 - $600 / SONG</div>
+            <ul class="card-specs">
+                <li>Complete stem reconstruction</li>
+                <li>Surgical frequency shaping</li>
+                <li>Advanced vocal processing</li>
+                <li>Custom master chain output</li>
+            </ul>
+        </div>
+    </div>
+</main>
+
+<footer id="secure-node">
+    <div style="font-size:.85rem;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase;">
+        SECURE ROUTING PIPELINE // PROTON NODE
+    </div>
+    <a class="secure-link" href="mailto:Frdahspider@protonmail.com">Frdahspider@protonmail.com</a>
+    <div style="color:var(--text-dim);font-size:.75rem;margin-top:30px;letter-spacing:1px;">
+        SECURE COMMUNICATION VIA PROTONMAIL ENCRYPTED INFRASTRUCTURE.<br>
+        © 2026 FRDAH AUDIO SPEC // CORESYNC ONLINE
+    </div>
+</footer>
+
+</body>
+</html>
